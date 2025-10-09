@@ -1,0 +1,114 @@
+### Variables
+@baseUrl = http://localhost:5037
+@apiVersion = v1
+
+### Health Check
+GET {{baseUrl}}/api/health
+Accept: application/json
+
+###
+
+### Get Configuration (Debug)
+GET {{baseUrl}}/api/debug/config
+Accept: application/json
+
+###
+
+### Test Simple C# to LINQ Conversion
+POST {{baseUrl}}/api/codeconversion/convert
+Content-Type: application/json
+
+{
+    "csharpCode": "List<int> numbers = new List<int> {1,2,3,4,5}; List<int> evens = new List<int>(); foreach(int num in numbers) { if(num % 2 == 0) evens.Add(num); }",
+    "includeExplanation": true,
+    "optimizeForPerformance": true,
+    "includeComments": true
+}
+
+###
+
+### Test Complex C# to LINQ Conversion
+POST {{baseUrl}}/api/codeconversion/convert
+Content-Type: application/json
+
+{
+    "csharpCode": "List<Product> products = GetProducts(); List<Product> expensiveProducts = new List<Product>(); foreach(Product p in products) { if(p.Price > 100 && p.Category == \"Electronics\") { expensiveProducts.Add(p); } }",
+    "includeExplanation": true,
+    "optimizeForPerformance": false,
+    "includeComments": false
+}
+
+###
+
+### Test Nested Loop Conversion
+POST {{baseUrl}}/api/codeconversion/convert
+Content-Type: application/json
+
+{
+    "csharpCode": "List<Order> orders = GetOrders(); List<OrderItem> items = new List<OrderItem>(); foreach(Order order in orders) { foreach(OrderItem item in order.Items) { if(item.Quantity > 1) { items.Add(item); } } }",
+    "includeExplanation": true,
+    "optimizeForPerformance": true,
+    "includeComments": true
+}
+
+###
+
+### Test Code Explanation
+POST {{baseUrl}}/api/codeconversion/explain
+Content-Type: application/json
+
+{
+    "csharpCode": "for(int i = 0; i < items.Count; i++) { if(items[i].IsActive) { ProcessItem(items[i]); } }",
+    "includeLinqEquivalent": true
+}
+
+###
+
+### Test Error Handling - Invalid Code
+POST {{baseUrl}}/api/codeconversion/convert
+Content-Type: application/json
+
+{
+    "csharpCode": "invalid C# code here!!!",
+    "includeExplanation": true
+}
+
+###
+
+### Test Vertex AI Directly (Debug Endpoint)
+POST {{baseUrl}}/api/debug/test-vertex-ai
+Content-Type: application/json
+
+"Convert this C# code to LINQ: List<int> numbers = new List<int>(); for(int i = 1; i <= 5; i++) { numbers.Add(i); }"
+
+###
+
+### Get Common Patterns
+GET {{baseUrl}}/api/codeconversion/patterns
+Accept: application/json
+
+###
+
+### Test Empty Request
+POST {{baseUrl}}/api/codeconversion/convert
+Content-Type: application/json
+
+{
+    "csharpCode": "",
+    "includeExplanation": false
+}
+
+###
+
+### Test Large Code Block
+POST {{baseUrl}}/api/codeconversion/convert
+Content-Type: application/json
+
+{
+    "csharpCode": "public class DataProcessor { public List<ProcessedData> ProcessItems(List<RawData> rawItems) { List<ProcessedData> processedItems = new List<ProcessedData>(); foreach(RawData raw in rawItems) { if(raw.IsValid && raw.Timestamp > DateTime.Now.AddDays(-30)) { ProcessedData processed = new ProcessedData(); processed.Id = raw.Id; processed.Value = raw.Value * 1.1; processed.Category = raw.Category.ToUpper(); processedItems.Add(processed); } } return processedItems; } }",
+    "includeExplanation": true,
+    "optimizeForPerformance": true,
+    "includeComments": true
+}
+
+###

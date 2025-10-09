@@ -1,0 +1,41 @@
+{
+    "dotnet.defaultSolution": "Expression Converter.sln",
+    "files.exclude": {
+        "**/bin": true,
+        "**/obj": true,
+        "**/node_modules": true,
+        "**/.git": true,
+        "**/.vs": true
+    },
+    "search.exclude": {
+        "**/node_modules": true,
+        "**/bin": true,
+        "**/obj": true
+    },
+    "files.associations": {
+        "*.http": "http"
+    },
+    "rest-client.requestNameAsPrefix": true,
+    "rest-client.environmentVariables": {
+        "local": {
+            "baseUrl": "http://localhost:5037",
+            "apiVersion": "v1"
+        },
+        "dev": {
+            "baseUrl": "https://your-dev-api.com",
+            "apiVersion": "v1"
+        }
+    },
+    "typescript.preferences.includePackageJsonAutoImports": "auto",
+    "angular.enable-strict-mode-prompt": false,
+    "emmet.includeLanguages": {
+        "typescript": "html"
+    },
+    "editor.formatOnSave": true,
+    "editor.codeActionsOnSave": {
+        "source.organizeImports": "explicit"
+    },
+    "csharp.format.enable": true,
+    "omnisharp.enableEditorConfigSupport": true,
+    "omnisharp.enableRoslynAnalyzers": true
+}
