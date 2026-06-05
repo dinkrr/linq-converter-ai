@@ -9,4 +9,6 @@ public interface IVertexAIService
     Task<ConvertCodeResponse> ConvertCSharpToLinqAsync(string csharpCode, ConversionOptions? options = null);
 
     Task<ExplainCodeResponse> ExplainCSharpCodeAsync(string csharpCode, bool includeLinqEquivalent = true);
+
+    CodeAnalysis AnalyzeCSharpCode(string csharpCode);
 }

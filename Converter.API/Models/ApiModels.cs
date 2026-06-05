@@ -39,3 +39,23 @@ public class ExplainCodeResponse
 
     public string? LinqEquivalent { get; set; }
 }
+
+public class ValidateCodeRequest
+{
+    public string CSharpCode { get; set; } = string.Empty;
+}
+
+public class ValidateCodeResponse
+{
+    public bool CanConvert { get; set; }
+
+    public string[] Issues { get; set; } = [];
+
+    public string[] Warnings { get; set; } = [];
+
+    public CodeAnalysis? Analysis { get; set; }
+
+    public bool Success { get; set; }
+
+    public string? Message { get; set; }
+}

@@ -440,7 +440,7 @@ Provide a comprehensive but concise analysis.";
     #endregion
 
     #region Code Analysis Methods
-    private CodeAnalysis AnalyzeCSharpCode(string csharpCode)
+    public CodeAnalysis AnalyzeCSharpCode(string csharpCode)
     {
         var patterns = new List<string>();
         var issues = new List<string>();

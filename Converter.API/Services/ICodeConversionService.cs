@@ -7,4 +7,5 @@ public interface ICodeConversionService
 {
     Task<ConvertCodeResponse> ConvertCSharpToLinqAsync(string csharpCode, ConversionOptions? options = null);
     Task<ExplainCodeResponse> ExplainCSharpCodeAsync(string csharpCode, bool includeLinqEquivalent = true);
+    Task<ValidateCodeResponse> ValidateForLinqAsync(string csharpCode);
 }
