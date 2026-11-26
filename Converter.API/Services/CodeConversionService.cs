@@ -54,4 +54,38 @@ public class CodeConversionService : ICodeConversionService
 
         return response;
     }
+
+    public Task<ValidateCodeResponse> ValidateForLinqAsync(string csharpCode)
+    {
+        if (string.IsNullOrWhiteSpace(csharpCode))
+        {
+            return Task.FromResult(new ValidateCodeResponse
+            {
+                CanConvert = false,
+                Success = false,
+                Message = "Empty C# code provided"
+            });
+        }
+
+        _logger.LogInformation("Validating C# code for LINQ conversion suitability. Code length: {Length}", csharpCode.Length);
+
+        var analysis = _vertexAIService.AnalyzeCSharpCode(csharpCode);
+
+        var convertiblePatterns = new HashSet<string> { "Loops", "Conditional Logic", "Collection Operations" };
+        var canConvert = analysis.DetectedPatterns.Any(p => convertiblePatterns.Contains(p));
+
+        _logger.LogInformation("Validation completed. CanConvert: {CanConvert}, Patterns: {Patterns}", canConvert, string.Join(", ", analysis.DetectedPatterns));
+
+        return Task.FromResult(new ValidateCodeResponse
+        {
+            CanConvert = canConvert,
+            Issues = [],
+            Warnings = analysis.PotentialIssues,
+            Analysis = analysis,
+            Success = true,
+            Message = canConvert
+                ? "Code contains patterns suitable for LINQ conversion"
+                : "No LINQ-convertible patterns detected in the provided code"
+        });
+    }
 }

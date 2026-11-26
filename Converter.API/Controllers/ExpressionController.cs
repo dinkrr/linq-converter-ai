@@ -92,6 +92,46 @@ public class CodeConversionController : ControllerBase
         });
     }
 
+    /// <summary>
+    /// Validates whether the provided C# code contains patterns suitable for LINQ conversion.
+    /// </summary>
+    /// <param name="request">The validation request containing the C# source code.</param>
+    /// <returns>
+    /// <list type="bullet">
+    ///   <item><description><c>200 OK</c> with a <see cref="ValidateCodeResponse"/> indicating suitability.</description></item>
+    ///   <item><description><c>400 Bad Request</c> when <paramref name="request"/> is null or empty.</description></item>
+    ///   <item><description><c>500 Internal Server Error</c> on unexpected errors.</description></item>
+    /// </list>
+    /// </returns>
+    [HttpPost("validate")]
+    public async Task<ActionResult<ValidateCodeResponse>> ValidateForLinqConversion([FromBody] ValidateCodeRequest request)
+    {
+        if (request == null || string.IsNullOrWhiteSpace(request.CSharpCode))
+        {
+            return BadRequest(new ValidateCodeResponse
+            {
+                CanConvert = false,
+                Success = false,
+                Message = "C# code is required for validation"
+            });
+        }
+
+        try
+        {
+            var response = await _codeConversionService.ValidateForLinqAsync(request.CSharpCode);
+            return Ok(response);
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(500, new ValidateCodeResponse
+            {
+                CanConvert = false,
+                Success = false,
+                Message = $"Internal server error: {ex.Message}"
+            });
+        }
+    }
+
     [HttpGet("patterns")]
     public IActionResult GetSupportedPatterns()
     {
